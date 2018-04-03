@@ -5,7 +5,6 @@ Ajouts :
 <li>Obligation de mettre des chiffres (dans le menu)</li>
 <li>Possibilité de desactiver l'info Argent Illegal</li>
 <li>Multiples Languages</li>
-
-
+ 
 Capture d'écran :
 <p><img src="https://i.imgur.com/bLoy4LX.jpg" alt="Addon view" data-canonical-src="https://i.imgur.com/bLoy4LX.jpg" style="max-width:100%;"></p>
