@@ -1,7 +1,11 @@
-/*-----------------------------------------------------------------
-	Author		= SlownLS
-	Addon 		= Wallet
------------------------------------------------------------------*/
+-------------------------------------------------------------------
+--	Author		= SlownLS, 
+--  Edit		= enzoFR60
+--	Addon 		= Wallet
+-------------------------------------------------------------------
+if SERVER then
+
+include("autorun/sh_config.lua")
 
 --[[-------------------------------------------------------------------------
 	Initialize Network
@@ -75,7 +79,7 @@ net.Receive( "Wallet:Player:DropMoney", function( length, ply )
         local tr = util.TraceLine( trace )
         local moneybag = DarkRP.createMoneyBag( tr.HitPos, Montant )
         hook.Call( "playerDroppedMoney", nil, ply, Montant, moneybag )
-        DarkRP.log( ply:Nick() .. " (" .. ply:SteamID() .. ") a jeter " .. DarkRP.formatMoney( Montant ) )
+        DarkRP.log( ply:Nick() .. " (" .. ply:SteamID() .. ") ".. Wallet.LanguageDropMoneyLogs.. " " .. DarkRP.formatMoney( Montant ) )
     end)
 end)
 
@@ -142,7 +146,9 @@ net.Receive( "Wallet:Player:GiveMoney", function( length, ply )
 
         DarkRP.notify( trace2.Entity, 0, 4, DarkRP.getPhrase( "has_given", ply:Nick(), DarkRP.formatMoney( Montant ) ) )
         DarkRP.notify( ply, 0, 4, DarkRP.getPhrase( "you_gave", trace2.Entity:Nick(), DarkRP.formatMoney( Montant ) ) )
-        DarkRP.log( ply:Nick() .. " (" .. ply:SteamID() .. ") a donner " .. DarkRP.formatMoney( Montant ) .. " à " .. trace2.Entity:Nick() .. " (" .. trace2.Entity:SteamID() .. ")" )
-		DarkRP.log( trace2.Entity:Nick() .. " (" .. trace2.Entity:SteamID() .. ") a reçu " .. DarkRP.formatMoney( Montant ) .. " de " .. ply:Nick() .. " (" .. ply:SteamID() .. ")" )
+        DarkRP.log( ply:Nick() .. " (" .. ply:SteamID() .. ") "..Wallet.LanguageGiveMoneyLogs.." " .. DarkRP.formatMoney( Montant ) .. Wallet.LanguageAtLogs .. trace2.Entity:Nick() .. " (" .. trace2.Entity:SteamID() .. ")" )
+		DarkRP.log( trace2.Entity:Nick() .. " (" .. trace2.Entity:SteamID() .. ") " ..Wallet.LanguageReceivedLogs.. " " .. DarkRP.formatMoney( Montant ) .. Wallet.LanguageOfLogs .. ply:Nick() .. " (" .. ply:SteamID() .. ")" )
 	end)
 end)
+
+end
