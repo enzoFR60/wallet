@@ -1,13 +1,10 @@
-/*-----------------------------------------------------------------
-	Author		= SlownLS
-	Addon 		= Wallet
------------------------------------------------------------------*/
+-------------------------------------------------------------------
+--	Author		= SlownLS, 
+--  Edit		= enzoFR60
+--	Addon 		= Wallet
+-------------------------------------------------------------------
 
-Wallet = {}
-
--- true = vous activez l'info de l'argent illegal.
--- false = vous desactivez l'info de l'argent illegal.
-Wallet.ArgentIllegal = true 
+include("autorun/sh_config.lua")
 
 --[[-------------------------------------------------------------------------
 	Blur
@@ -45,27 +42,28 @@ net.Receive( "Wallet:Player:OpenMenu", function()
 		DrawBlur( self, 6, 30 )
 		draw.RoundedBox( 6, 0, 0, w, h, Color( 30, 30, 30, 200 ) )
 		draw.RoundedBox( 1, 0, 0, w, 25, Color( 0, 0, 0, 80 ) )   
-		draw.RoundedBox( 1, 0, 25, w, 1, Color( 0, 0, 0, 80 ) )    
-
-		draw.SimpleText( "Vous avez " .. LocalPlayer():getDarkRPVar( 'money' ) .. "€ d'argent sur vous.", "Trebuchet24", w / 2 , 25, color_white, TEXT_ALIGN_CENTER )
+		draw.RoundedBox( 1, 0, 25, w, 1, Color( 0, 0, 0, 80 ) )  
 		 
 	  if Wallet.ArgentIllegal then
-		draw.SimpleText( "Vous avez "..LocalPlayer():GetNWInt("player_money_illegal").."€ d'argent illegal sur vous.", "Trebuchet24", w / 2 , 45, color_white, TEXT_ALIGN_CENTER )
-	  end
+		draw.SimpleText( Wallet.LanguageHave.." "..LocalPlayer():GetNWInt("player_money_illegal")..Wallet.LanguageSignMoney.." "..Wallet.LanguageMoneyIllegal, "Trebuchet24", w / 2 , 45, color_white, TEXT_ALIGN_CENTER )
+		draw.SimpleText( Wallet.LanguageHave.." " .. LocalPlayer():getDarkRPVar( 'money' ) ..Wallet.LanguageSignMoney.. " "..Wallet.LanguageMoney, "Trebuchet24", w / 2 , 25, color_white, TEXT_ALIGN_CENTER )
+	  else
+	  draw.SimpleText( Wallet.LanguageHave.." " .. LocalPlayer():getDarkRPVar( 'money' ) .. Wallet.LanguageSignMoney.." "..Wallet.LanguageMoney, "Trebuchet24", w / 2 , 35, color_white, TEXT_ALIGN_CENTER )
+	end
 	end
 
 	local Money = vgui.Create( "DTextEntry", Base )
 	Money:SetSize( Base:GetWide() - 10, 25 )
 	Money:SetPos( 5, 70 )
-	Money:SetText( "Entrer un montant..." )
+	Money:SetText( Wallet.LanguageEnterAmount )
 	Money:SetNumeric( true )
-	Money.OnGetFocus = function( self ) if self:GetText() == "Entrer un montant..." then self:SetText( '' ) end end
-	Money.OnLoseFocus = function( self ) if self:GetText() == "" then self:SetText( "Entrer un montant..." ) end end
+	Money.OnGetFocus = function( self ) if self:GetText() == Wallet.LanguageEnterAmount then self:SetText( '' ) end end
+	Money.OnLoseFocus = function( self ) if self:GetText() == "" then self:SetText( Wallet.LanguageEnterAmount ) end end
 
 	local DropMoney = vgui.Create( "DButton", Base )
 	DropMoney:SetSize( 240, 35 )
 	DropMoney:SetPos( 5, Base:GetTall() - 40 )
-	DropMoney:SetText( "Jeter de l'argent" )
+	DropMoney:SetText( Wallet.LanguageDropMoney )
 	DropMoney:SetFont( 'Trebuchet24' )
 	DropMoney:SetTextColor(  Color( 255, 255, 255, 200 ) )
 	DropMoney.OnCursorEntered = function( self ) self.hover = true surface.PlaySound("UI/buttonrollover.wav") end
@@ -84,7 +82,7 @@ net.Receive( "Wallet:Player:OpenMenu", function()
 		end
 	end	
 	DropMoney.DoClick = function()
-		if Money:GetValue() == "" || Money:GetValue() == "Entrer un montant..." then return end
+		if Money:GetValue() == "" || Money:GetValue() == Wallet.LanguageEnterAmount then return end
 
 		net.Start( "Wallet:Player:DropMoney" )
 		net.WriteInt( Money:GetValue(), 32 )
@@ -96,7 +94,7 @@ net.Receive( "Wallet:Player:OpenMenu", function()
 	local GiveMoney = vgui.Create( "DButton", Base )
 	GiveMoney:SetSize( 245, 35 )
 	GiveMoney:SetPos( 250, Base:GetTall() - 40 )
-	GiveMoney:SetText( "Donner de l'argent" )
+	GiveMoney:SetText( Wallet.LanguageGiveMoney )
 	GiveMoney:SetFont( 'Trebuchet24' )
 	GiveMoney:SetTextColor(  Color( 255, 255, 255, 200 ) )
 	GiveMoney.OnCursorEntered = function( self ) self.hover = true surface.PlaySound("UI/buttonrollover.wav") end
@@ -115,7 +113,7 @@ net.Receive( "Wallet:Player:OpenMenu", function()
 		end
 	end
 	GiveMoney.DoClick = function()
-		if Money:GetValue() == "" || Money:GetValue() == "Entrer un montant..." then return end
+		if Money:GetValue() == "" || Money:GetValue() == Wallet.LanguageEnterAmount then return end
 		
 		net.Start( "Wallet:Player:GiveMoney" )
 		net.WriteInt( Money:GetValue(), 32 )
